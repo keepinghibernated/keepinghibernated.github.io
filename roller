@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Occult Character Roller</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:flex-start;
+    background:
+        radial-gradient(circle at top, #1d1630 0%, #0b0a10 45%, #050507 100%);
+    color:white;
+    font-family:'Cinzel', serif;
+    padding:40px 20px;
+}
+
+.container{
+    width:min(900px, 100%);
+}
+
+.choices{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:18px;
+}
+
+.choice{
+    position:relative;
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:22px;
+    border-radius:18px;
+    background:rgba(12, 11, 22, 0.9);
+    border:1px solid rgba(175, 125, 255, 0.25);
+    cursor:pointer;
+    transition:0.25s;
+    font-size:1.15rem;
+    overflow:hidden;
+}
+
+.choice:hover{
+    border-color:#9f6eff;
+    box-shadow:
+        0 0 18px rgba(165, 105, 255, 0.25);
+}
+
+.choice.selected{
+    border-color:#c89bff;
+    background:rgba(44, 28, 63, 0.95);
+    box-shadow:
+        0 0 20px rgba(190, 130, 255, 0.35);
+}
+
+.choice input{
+    display:none;
+}
+
+.checkbox{
+    width:34px;
+    height:34px;
+    border-radius:8px;
+    border:2px solid rgba(255,255,255,0.4);
+    transition:0.25s;
+    flex-shrink:0;
+}
+
+.choice.selected .checkbox{
+    background:#b982ff;
+    border-color:#e5c9ff;
+    box-shadow:
+        0 0 12px rgba(211, 156, 255, 0.8);
+}
+
+.roll-btn{
+    width:100%;
+    margin-top:26px;
+    padding:24px;
+    border:none;
+    border-radius:22px;
+    background:
+        linear-gradient(135deg, #3c2459, #1b122b);
+    color:white;
+    font-family:'Cinzel', serif;
+    font-size:2rem;
+    cursor:pointer;
+    transition:0.25s;
+    border:1px solid rgba(200, 140, 255, 0.45);
+    box-shadow:
+        0 0 25px rgba(157, 97, 255, 0.25);
+}
+
+.roll-btn:hover{
+    transform:scale(1.01);
+    box-shadow:
+        0 0 30px rgba(187, 127, 255, 0.45);
+}
+
+.result{
+    margin-top:32px;
+    padding:28px;
+    border-radius:28px;
+    background:rgba(8, 8, 16, 0.95);
+    border:1px solid rgba(185, 130, 255, 0.3);
+    display:none;
+    text-align:center;
+    box-shadow:
+        0 0 40px rgba(131, 74, 211, 0.3);
+}
+
+.result-name{
+    font-size:4rem;
+    color:#ead3ff;
+    margin-bottom:20px;
+    text-shadow:
+        0 0 18px rgba(202, 153, 255, 0.6);
+}
+
+.result img{
+    width:min(700px, 100%);
+    border-radius:18px;
+    border:1px solid rgba(255,255,255,0.1);
+    box-shadow:
+        0 0 28px rgba(170, 120, 255, 0.35);
+}
+
+.bounce{
+    animation:bounce 0.8s ease;
+}
+
+@keyframes bounce{
+
+    0%{
+        opacity:0;
+        transform:translateY(-80px) scale(0.7);
+    }
+
+    40%{
+        opacity:1;
+        transform:translateY(0px) scale(1.06);
+    }
+
+    60%{
+        transform:translateY(-16px) scale(0.97);
+    }
+
+    80%{
+        transform:translateY(0px) scale(1.02);
+    }
+
+    100%{
+        transform:translateY(0px) scale(1);
+    }
+}
+
+@media(max-width:700px){
+
+    .choices{
+        grid-template-columns:1fr;
+    }
+
+    .result-name{
+        font-size:2.6rem;
+    }
+
+    .roll-btn{
+        font-size:1.5rem;
+    }
+}
+
+</style>
+</head>
+<body>
+
+<div class="container">
+
+    <div class="choices" id="choices"></div>
+
+    <button class="roll-btn" onclick="rollCharacter()">
+        Roll
+    </button>
+
+    <div class="result" id="result">
+
+        <div class="result-name" id="resultName"></div>
+
+        <img id="resultImage" src="" alt="">
+
+    </div>
+
+</div>
+
+<script>
+
+const characters = [
+
+    {
+        name: "Golem",
+        image: "ADEB3146-8C3C-4248-B347-555D6E518A3B.jpeg"
+    },
+
+    {
+        name: "Dryad",
+        image: "B83C2D44-9452-4FC1-AE19-5A3CD2E0C9DE.jpeg"
+    },
+
+    {
+        name: "Oceanid",
+        image: "D2522ACC-BF42-4F1F-9F6F-22CA19CD38E7.jpeg"
+    },
+
+    {
+        name: "Narehate",
+        image: "26050E75-6C1A-427A-B735-BD46606C1EFF.jpeg"
+    },
+
+    {
+        name: "Bakeneko",
+        image: "22A55537-82B0-4F3F-81D7-83321C88EA11.jpeg"
+    },
+
+    {
+        name: "Witch",
+        image: "C6CCA96E-A7AA-4643-833A-5916AFC3E01C.jpeg"
+    },
+
+    {
+        name: "Detective",
+        image: "7C5C121D-E23D-459E-88C8-4EBFD50056A0.jpeg"
+    },
+
+    {
+        name: "Vampire",
+        image: "6D905CA1-C2E7-423F-BB21-8AA7B320E56B.jpeg"
+    },
+
+    {
+        name: "Fae",
+        image: "7CB9022B-57B5-43F8-A590-92140F041B87.jpeg"
+    }
+];
+
+const choices = document.getElementById("choices");
+
+characters.forEach((char, index) => {
+
+    const label = document.createElement("label");
+
+    label.className = "choice";
+
+    label.innerHTML = `
+        <input type="checkbox" value="${index}">
+        <div class="checkbox"></div>
+        <div>${char.name}</div>
+    `;
+
+    const checkbox = label.querySelector("input");
+
+    checkbox.addEventListener("change", () => {
+
+        label.classList.toggle("selected", checkbox.checked);
+
+    });
+
+    choices.appendChild(label);
+
+});
+
+function rollCharacter(){
+
+    const selected =
+        [...document.querySelectorAll("input:checked")];
+
+    if(selected.length === 0){
+
+        alert("Select at least one character.");
+
+        return;
+    }
+
+    const picked =
+        selected[Math.floor(Math.random() * selected.length)];
+
+    const character =
+        characters[picked.value];
+
+    const result =
+        document.getElementById("result");
+
+    const resultName =
+        document.getElementById("resultName");
+
+    const resultImage =
+        document.getElementById("resultImage");
+
+    resultName.textContent =
+        character.name;
+
+    resultImage.src =
+        character.image;
+
+    resultImage.alt =
+        character.name;
+
+    result.style.display = "block";
+
+    result.classList.remove("bounce");
+
+    void result.offsetWidth;
+
+    result.classList.add("bounce");
+
+    result.scrollIntoView({
+        behavior:"smooth"
+    });
+}
+
+</script>
+
+</body>
+</html>
