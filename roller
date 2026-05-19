@@ -214,42 +214,42 @@ const characters = [
 
     {
         name: "Dryad",
-        image: "B83C2D44-9452-4FC1-AE19-5A3CD2E0C9DE.jpeg"
+        image: "769296CD2A3EFC351F3A183168948A07.png"
     },
 
     {
         name: "Oceanid",
-        image: "D2522ACC-BF42-4F1F-9F6F-22CA19CD38E7.jpeg"
+        image: "BBDC0F505C43BDB599AC686524D65C83.png"
     },
 
     {
         name: "Narehate",
-        image: "26050E75-6C1A-427A-B735-BD46606C1EFF.jpeg"
+        image: "E8B73DC9ABCCC3C5355F2C1C73039D04.png"
     },
 
     {
         name: "Bakeneko",
-        image: "22A55537-82B0-4F3F-81D7-83321C88EA11.jpeg"
+        image: "E602E0F72BF016BA3C5F9BD3F3B52213.png"
     },
 
     {
         name: "Witch",
-        image: "C6CCA96E-A7AA-4643-833A-5916AFC3E01C.jpeg"
+        image: "DE192AB3CFF6402597D9B58279EED089.png"
     },
 
     {
         name: "Detective",
-        image: "7C5C121D-E23D-459E-88C8-4EBFD50056A0.jpeg"
+        image: "B792D0100DB3B3621FDB3AB59E196149.png"
     },
 
     {
         name: "Vampire",
-        image: "6D905CA1-C2E7-423F-BB21-8AA7B320E56B.jpeg"
+        image: "F4074E948F1E8657041171CC9DA14EC5.png"
     },
 
     {
         name: "Fae",
-        image: "7CB9022B-57B5-43F8-A590-92140F041B87.jpeg"
+        image: "E9BD3ACF86F330135A333D05BFFBB30D.png"
     }
 ];
 
