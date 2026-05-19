@@ -37,6 +37,33 @@ body{
     display:block;
 }
 
+.controls{
+    display:flex;
+    gap:12px;
+    margin-bottom:20px;
+    justify-content:center;
+}
+
+.quick-btn{
+    padding:10px 20px;
+    border:none;
+    border-radius:12px;
+    background:rgba(40, 40, 40, 0.9);
+    color:white;
+    font-family:'Cinzel', serif;
+    font-size:0.95rem;
+    cursor:pointer;
+    transition:0.25s;
+    border:1px solid rgba(180, 180, 180, 0.35);
+}
+
+.quick-btn:hover{
+    background:rgba(55, 55, 55, 0.95);
+    border-color:#c0c0c0;
+    box-shadow:
+        0 0 15px rgba(150, 150, 150, 0.25);
+}
+
 .choices{
     display:grid;
     grid-template-columns:repeat(3, 1fr);
@@ -190,6 +217,14 @@ body{
         width:min(150px, 100%);
         margin-bottom:25px;
     }
+
+    .controls{
+        flex-direction:column;
+    }
+
+    .quick-btn{
+        width:100%;
+    }
 }
 
 </style>
@@ -199,6 +234,11 @@ body{
 <div class="container">
 
     <img src="HBIcon-white.PNG" alt="Keeping Hibernated" class="title-image">
+
+    <div class="controls">
+        <button class="quick-btn" onclick="selectAll()">Select All</button>
+        <button class="quick-btn" onclick="clearAll()">Clear All</button>
+    </div>
 
     <div class="choices" id="choices"></div>
 
@@ -293,6 +333,26 @@ characters.forEach((char, index) => {
     choices.appendChild(label);
 
 });
+
+function selectAll(){
+    const checkboxes = document.querySelectorAll("input[type='checkbox']");
+    checkboxes.forEach(checkbox => {
+        if(!checkbox.checked){
+            checkbox.checked = true;
+            checkbox.closest(".choice").classList.add("selected");
+        }
+    });
+}
+
+function clearAll(){
+    const checkboxes = document.querySelectorAll("input[type='checkbox']");
+    checkboxes.forEach(checkbox => {
+        if(checkbox.checked){
+            checkbox.checked = false;
+            checkbox.closest(".choice").classList.remove("selected");
+        }
+    });
+}
 
 function rollCharacter(){
 
