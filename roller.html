@@ -219,6 +219,8 @@ body{
 
 </div>
 
+<audio id="rollSound" src="Tape-click.wav"></audio>
+
 <script>
 
 const characters = [
@@ -342,6 +344,10 @@ function rollCharacter(){
     result.scrollIntoView({
         behavior:"smooth"
     });
+
+    const rollSound = document.getElementById("rollSound");
+    rollSound.currentTime = 0;
+    rollSound.play();
 }
 
 </script>
