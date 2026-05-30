@@ -89,7 +89,7 @@ margin-bottom:8px;
 font-weight:600;
 }
 
-select{
+input[type="datetime-local"]{
 
 width:100%;
 padding:12px;
@@ -101,6 +101,9 @@ border:1px solid #888;
 border-radius:10px;
 
 font-size:16px;
+
+font-family:'Bricolage Grotesque',sans-serif;
+
 }
 
 .card-preview{
@@ -239,6 +242,16 @@ padding:20px;
 
 </div>
 
+<div class="section">
+
+<label>Current Fronting Time</label>
+
+<input
+type="datetime-local"
+id="currentTime">
+
+</div>
+
 <div class="card-preview">
 
 <img
@@ -253,6 +266,16 @@ alt="preview">
 <label>Next Fronting</label>
 
 <select id="nextFrontingSelect"></select>
+
+</div>
+
+<div class="section">
+
+<label>Next Fronting Time</label>
+
+<input
+type="datetime-local"
+id="nextTime">
 
 </div>
 
@@ -289,7 +312,11 @@ Clear
 
 nowFronting<br>
 nowFrontingId<br>
-nowFrontingTime
+nowFrontingTime<br><br>
+
+nextFronting<br>
+nextFrontingId<br>
+nextFrontingTime
 
 </div>
 
@@ -396,6 +423,25 @@ updateNextPreview
 updateCurrentPreview();
 updateNextPreview();
 
+const now = new Date();
+
+const localNow =
+new Date(
+now.getTime()
+-
+now.getTimezoneOffset()*60000
+)
+.toISOString()
+.slice(0,16);
+
+document.getElementById(
+"currentTime"
+).value = localNow;
+
+document.getElementById(
+"nextTime"
+).value = localNow;
+
 function saveData(){
 
 const currentId =
@@ -414,8 +460,15 @@ MEMBERS.find(
 m=>m.id===nextId
 );
 
-const now =
-new Date().toISOString();
+const currentTime =
+document.getElementById(
+"currentTime"
+).value;
+
+const nextTime =
+document.getElementById(
+"nextTime"
+).value;
 
 const data = {
 
@@ -426,7 +479,7 @@ nowFrontingId:
 currentMember.id,
 
 nowFrontingTime:
-now,
+currentTime
 
 nextFronting:
 nextMember.name,
@@ -435,7 +488,7 @@ nextFrontingId:
 nextMember.id,
 
 nextFrontingTime:
-now
+nextTime
 
 };
 
