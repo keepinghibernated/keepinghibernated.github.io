@@ -292,71 +292,47 @@ History
 
 const MEMBERS = [
 
-{
-name:"Lithium",
-id:"Lithium"
-},
-
-{
-name:"B Minten",
-id:"BMinten"
-},
-
-{
-name:"Mahiru",
-id:"Mahiru"
-},
-
-{
-name:"V_eko",
-id:"VEko"
-},
-
-{
-name:"L-Maelonna",
-id:"LMaelonna"
-},
-
-{
-name:"M Anna",
-id:"MAnna"
-},
-
-{
-name:"R-Maria",
-id:"RMaria"
-},
-
-{
-name:"Mors = V",
-id:"MorsV"
-},
-
-{
-name:"Rei = Atlas",
-id:"ReiAtlas"
-}
+{name:"Lithium",id:"Lithium"},
+{name:"B Minten",id:"BMinten"},
+{name:"Mahiru",id:"Mahiru"},
+{name:"V_eko",id:"VEko"},
+{name:"L-Maelonna",id:"LMaelonna"},
+{name:"M Anna",id:"MAnna"},
+{name:"R-Maria",id:"RMaria"},
+{name:"Mors = V",id:"MorsV"},
+{name:"Rei = Atlas",id:"ReiAtlas"}
 
 ];
 
-const select =
+const currentSelect =
 document.getElementById("frontingSelect");
+
+const nextSelect =
+document.getElementById("nextFrontingSelect");
 
 MEMBERS.forEach(member=>{
 
-const option =
+const currentOption =
 document.createElement("option");
 
-option.value = member.id;
-option.textContent = member.name;
+currentOption.value = member.id;
+currentOption.textContent = member.name;
 
-select.appendChild(option);
+currentSelect.appendChild(currentOption);
+
+const nextOption =
+document.createElement("option");
+
+nextOption.value = member.id;
+nextOption.textContent = member.name;
+
+nextSelect.appendChild(nextOption);
 
 });
 
-function updatePreview(){
+function updateCurrentPreview(){
 
-const id = select.value;
+const id = currentSelect.value;
 
 const img =
 document.getElementById("cardPreview");
@@ -372,32 +348,77 @@ img.src = "cards/default.png";
 
 }
 
-select.addEventListener(
+function updateNextPreview(){
+
+const id = nextSelect.value;
+
+const img =
+document.getElementById("nextCardPreview");
+
+img.src = `cards/${id}.png`;
+
+img.onerror = ()=>{
+
+img.onerror = null;
+img.src = "cards/default.png";
+
+};
+
+}
+
+currentSelect.addEventListener(
 "change",
-updatePreview
+updateCurrentPreview
 );
 
-updatePreview();
+nextSelect.addEventListener(
+"change",
+updateNextPreview
+);
+
+updateCurrentPreview();
+updateNextPreview();
 
 function saveData(){
 
-const id = select.value;
+const currentId =
+currentSelect.value;
 
-const member =
+const nextId =
+nextSelect.value;
+
+const currentMember =
 MEMBERS.find(
-m=>m.id===id
+m=>m.id===currentId
 );
+
+const nextMember =
+MEMBERS.find(
+m=>m.id===nextId
+);
+
+const now =
+new Date().toISOString();
 
 const data = {
 
-nowFronting:member.name,
-nowFrontingId:member.id,
+nowFronting:
+currentMember.name,
+
+nowFrontingId:
+currentMember.id,
 
 nowFrontingTime:
-new Date().toISOString(),
+now,
 
-nextFronting:"",
-nextFrontingTime:""
+nextFronting:
+nextMember.name,
+
+nextFrontingId:
+nextMember.id,
+
+nextFrontingTime:
+now
 
 };
 
@@ -511,6 +532,10 @@ history.map((item,index)=>`
 <div>
 
 <b>${item.nowFronting}</b>
+
+→
+
+<b>${item.nextFronting || "--"}</b>
 
 <br>
 
