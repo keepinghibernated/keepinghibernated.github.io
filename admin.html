@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>后台管理 - Fronting 管理系统</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lora:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,68 +15,113 @@
         }
 
         body {
-            font-family: 'Microsoft YaHei', Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Lora', 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #16213e 100%);
             min-height: 100vh;
             padding: 20px;
+            color: #e0e0e0;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* 神秘背景效果 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(75, 0, 130, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(128, 0, 128, 0.03) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
         }
 
         .container {
-            max-width: 1000px;
+            max-width: 1100px;
             margin: 0 auto;
-            background: white;
-            border-radius: 10px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
-            padding: 30px;
+            background: rgba(15, 15, 35, 0.85);
+            border-radius: 15px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            padding: 50px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            position: relative;
+            z-index: 1;
         }
 
         h1 {
-            color: #333;
-            margin-bottom: 30px;
+            color: #d4af37;
+            margin-bottom: 40px;
             text-align: center;
-            font-size: 28px;
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: 3px;
+            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
+            word-spacing: 2px;
         }
 
         .form-section {
-            background: #f9f9f9;
-            padding: 25px;
-            border-radius: 8px;
-            margin-bottom: 30px;
-            border-left: 4px solid #667eea;
+            background: rgba(20, 20, 40, 0.9);
+            padding: 35px;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            border-left: 3px solid #d4af37;
+            border-top: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
         }
 
         .form-group {
-            margin-bottom: 20px;
+            margin-bottom: 28px;
         }
 
         label {
             display: block;
-            margin-bottom: 8px;
-            color: #333;
+            margin-bottom: 10px;
+            color: #d4af37;
             font-weight: 500;
-            font-size: 14px;
+            font-size: 15px;
+            letter-spacing: 1px;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
         }
 
         select, input[type="datetime-local"] {
             width: 100%;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 5px;
-            font-size: 14px;
-            transition: border-color 0.3s;
-            font-family: inherit;
+            padding: 14px 16px;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            border-radius: 8px;
+            font-size: 15px;
+            background: rgba(30, 30, 50, 0.8);
+            color: #e0e0e0;
+            transition: all 0.3s ease;
+            font-family: 'Lora', serif;
         }
 
         select:focus, input[type="datetime-local"]:focus {
             outline: none;
-            border-color: #667eea;
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+            border-color: #d4af37;
+            box-shadow: 
+                0 0 0 2px rgba(212, 175, 55, 0.15),
+                inset 0 0 10px rgba(212, 175, 55, 0.05);
+            background: rgba(30, 30, 55, 0.9);
+        }
+
+        select option {
+            background: #1a1a3e;
+            color: #e0e0e0;
         }
 
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 20px;
+            gap: 25px;
         }
 
         @media (max-width: 768px) {
@@ -84,74 +132,114 @@
 
         .button-group {
             display: flex;
-            gap: 10px;
+            gap: 15px;
             justify-content: center;
-            margin-top: 30px;
+            margin-top: 40px;
         }
 
         button {
-            padding: 12px 30px;
-            font-size: 16px;
+            padding: 14px 35px;
+            font-size: 15px;
             border: none;
-            border-radius: 5px;
+            border-radius: 8px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1px;
+            text-transform: uppercase;
         }
 
         .submit-btn {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            background: linear-gradient(135deg, #d4af37 0%, #f0e68c 100%);
+            color: #0a0e27;
             flex: 1;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.25);
+            border: 1px solid #d4af37;
         }
 
         .submit-btn:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(212, 175, 55, 0.4);
+            background: linear-gradient(135deg, #f0e68c 0%, #d4af37 100%);
         }
 
         .submit-btn:active {
-            transform: translateY(0);
+            transform: translateY(-1px);
         }
 
         .view-btn {
-            background: #4CAF50;
-            color: white;
-            flex: 0.5;
+            background: rgba(212, 175, 55, 0.15);
+            color: #d4af37;
+            flex: 0.6;
+            border: 1px solid rgba(212, 175, 55, 0.5);
         }
 
         .view-btn:hover {
-            background: #45a049;
+            background: rgba(212, 175, 55, 0.25);
+            border-color: #d4af37;
+            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
+            transform: translateY(-2px);
         }
 
         .history-section {
-            background: #f9f9f9;
-            padding: 25px;
-            border-radius: 8px;
-            border-left: 4px solid #4CAF50;
+            background: rgba(20, 20, 40, 0.9);
+            padding: 35px;
+            border-radius: 12px;
+            border-left: 3px solid #8b7355;
+            border-top: 1px solid rgba(139, 115, 85, 0.2);
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
         }
 
         .history-section h2 {
-            color: #333;
-            margin-bottom: 20px;
-            font-size: 18px;
+            color: #d4af37;
+            margin-bottom: 25px;
+            font-size: 22px;
+            font-family: 'Playfair Display', serif;
+            letter-spacing: 2px;
         }
 
         .history-list {
-            max-height: 400px;
+            max-height: 450px;
             overflow-y: auto;
         }
 
+        .history-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .history-list::-webkit-scrollbar-track {
+            background: rgba(212, 175, 55, 0.05);
+            border-radius: 4px;
+        }
+
+        .history-list::-webkit-scrollbar-thumb {
+            background: rgba(212, 175, 55, 0.4);
+            border-radius: 4px;
+        }
+
+        .history-list::-webkit-scrollbar-thumb:hover {
+            background: rgba(212, 175, 55, 0.6);
+        }
+
         .history-item {
-            background: white;
-            padding: 15px;
-            margin-bottom: 10px;
-            border-radius: 5px;
-            border-left: 3px solid #667eea;
+            background: rgba(30, 30, 55, 0.6);
+            padding: 18px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            border-left: 3px solid #d4af37;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(212, 175, 55, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .history-item:hover {
+            background: rgba(30, 30, 55, 0.8);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
+            transform: translateX(5px);
         }
 
         .history-item-content {
@@ -161,48 +249,63 @@
         .history-time {
             color: #999;
             font-size: 12px;
-            margin-top: 5px;
+            margin-top: 8px;
+            font-family: 'Montserrat', sans-serif;
         }
 
         .history-detail {
-            color: #666;
+            color: #c0c0c0;
             font-size: 14px;
-            margin: 5px 0;
+            margin: 6px 0;
+            font-family: 'Lora', serif;
+        }
+
+        .history-detail strong {
+            color: #d4af37;
         }
 
         .delete-btn {
-            background: #f44336;
-            color: white;
-            padding: 6px 12px;
-            border: none;
-            border-radius: 3px;
+            background: rgba(220, 20, 60, 0.2);
+            color: #ff6b6b;
+            padding: 6px 14px;
+            border: 1px solid rgba(255, 107, 107, 0.4);
+            border-radius: 6px;
             cursor: pointer;
             font-size: 12px;
-            margin-left: 10px;
+            margin-left: 12px;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
         }
 
         .delete-btn:hover {
-            background: #da190b;
+            background: rgba(220, 20, 60, 0.4);
+            border-color: #ff6b6b;
+            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
         }
 
         .empty-message {
-            color: #999;
+            color: #666;
             text-align: center;
-            padding: 20px;
+            padding: 30px;
+            font-style: italic;
+            font-family: 'Lora', serif;
         }
 
         .notification {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            background: #4CAF50;
-            color: white;
-            padding: 15px 20px;
-            border-radius: 5px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+            top: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #d4af37 0%, #f0e68c 100%);
+            color: #0a0e27;
+            padding: 18px 25px;
+            border-radius: 8px;
+            box-shadow: 0 10px 35px rgba(212, 175, 55, 0.3);
             display: none;
             z-index: 1000;
-            animation: slideIn 0.3s ease;
+            animation: slideIn 0.4s ease;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            border: 1px solid #d4af37;
         }
 
         @keyframes slideIn {
@@ -219,17 +322,27 @@
         .notification.show {
             display: block;
         }
+
+        @media (max-width: 1024px) {
+            .container {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 32px;
+            }
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎭 Fronting 管理系统 - 后台</h1>
+        <h1>✦ Fronting 管理系统 ✦</h1>
 
         <div class="form-section">
             <form id="frontingForm">
                 <div class="form-grid">
                     <div class="form-group">
-                        <label for="nowFronting">现在 Fronting (Now Fronting)</label>
+                        <label for="nowFronting">现在 Fronting</label>
                         <select id="nowFronting" required>
                             <option value="">-- 请选择 --</option>
                             <option value="AA">AA</option>
@@ -245,7 +358,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="nextFronting">下一个 Fronting (Next Fronting)</label>
+                        <label for="nextFronting">下一个 Fronting</label>
                         <select id="nextFronting" required>
                             <option value="">-- 请选择 --</option>
                             <option value="AA">AA</option>
@@ -261,25 +374,25 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="nowFrontingTime">现在 Fronting 时间 (Now Fronting Time)</label>
+                        <label for="nowFrontingTime">现在时间</label>
                         <input type="datetime-local" id="nowFrontingTime" required>
                     </div>
 
                     <div class="form-group">
-                        <label for="nextFrontingTime">下一个 Fronting 时间 (Next Fronting Time)</label>
+                        <label for="nextFrontingTime">下一个时间</label>
                         <input type="datetime-local" id="nextFrontingTime" required>
                     </div>
                 </div>
 
                 <div class="button-group">
-                    <button type="submit" class="submit-btn">📤 提交</button>
-                    <button type="button" class="view-btn" onclick="openDisplay()">👁️ 查看展示页面</button>
+                    <button type="submit" class="submit-btn">✦ 提交 ✦</button>
+                    <button type="button" class="view-btn" onclick="openDisplay()">◆ 展示 ◆</button>
                 </div>
             </form>
         </div>
 
         <div class="history-section">
-            <h2>📋 提交历史</h2>
+            <h2>◈ 提交历史</h2>
             <div class="history-list" id="historyList">
                 <div class="empty-message">暂无提交记录</div>
             </div>
@@ -289,13 +402,11 @@
     <div class="notification" id="notification"></div>
 
     <script>
-        // 初始化表单和历史记录
         function initPage() {
             loadHistory();
             setDefaultDateTime();
         }
 
-        // 设置默认时间为当前时间
         function setDefaultDateTime() {
             const now = new Date();
             const year = now.getFullYear();
@@ -310,7 +421,6 @@
             document.getElementById('nextFrontingTime').value = defaultDateTime;
         }
 
-        // 表单提交
         document.getElementById('frontingForm').addEventListener('submit', function(e) {
             e.preventDefault();
 
@@ -320,11 +430,10 @@
             const nextFrontingTime = document.getElementById('nextFrontingTime').value;
 
             if (!nowFronting || !nextFronting || !nowFrontingTime || !nextFrontingTime) {
-                showNotification('请填写所有字段', 'error');
+                showNotification('请填写所有字段');
                 return;
             }
 
-            // 保存当前数据到 localStorage
             const currentData = {
                 nowFronting: nowFronting,
                 nextFronting: nextFronting,
@@ -335,18 +444,15 @@
 
             localStorage.setItem('currentFrontingData', JSON.stringify(currentData));
 
-            // 添加到历史记录
             let history = JSON.parse(localStorage.getItem('frontingHistory') || '[]');
             history.unshift(currentData);
-            // 只保存最多 50 条历史记录
             history = history.slice(0, 50);
             localStorage.setItem('frontingHistory', JSON.stringify(history));
 
-            showNotification('✅ 提交成功！数据已保存');
+            showNotification('✦ 提交成功 ✦');
             loadHistory();
         });
 
-        // 加载历史记录
         function loadHistory() {
             const history = JSON.parse(localStorage.getItem('frontingHistory') || '[]');
             const historyList = document.getElementById('historyList');
@@ -364,27 +470,24 @@
                             <strong>下一个:</strong> ${item.nextFronting}
                         </div>
                         <div class="history-detail">
-                            <strong>现在时间:</strong> ${item.nowFrontingTime} | 
-                            <strong>下一个时间:</strong> ${item.nextFrontingTime}
+                            <strong>时间:</strong> ${item.nowFrontingTime} → ${item.nextFrontingTime}
                         </div>
-                        <div class="history-time">提交时间: ${item.timestamp}</div>
+                        <div class="history-time">提交于: ${item.timestamp}</div>
                     </div>
                     <button class="delete-btn" onclick="deleteHistory(${index})">删除</button>
                 </div>
             `).join('');
         }
 
-        // 删除历史记录
         function deleteHistory(index) {
             let history = JSON.parse(localStorage.getItem('frontingHistory') || '[]');
             history.splice(index, 1);
             localStorage.setItem('frontingHistory', JSON.stringify(history));
             loadHistory();
-            showNotification('✅ 已删除');
+            showNotification('✦ 已删除 ✦');
         }
 
-        // 显示通知
-        function showNotification(message, type = 'success') {
+        function showNotification(message) {
             const notification = document.getElementById('notification');
             notification.textContent = message;
             notification.classList.add('show');
@@ -394,15 +497,11 @@
             }, 3000);
         }
 
-        // 打开展示页面
         function openDisplay() {
-            window.open('display.html', 'display', 'width=1000,height=600');
+            window.open('display.html', 'display', 'width=1200,height=700');
         }
 
-        // 页面加载时初始化
         window.addEventListener('load', initPage);
-
-        // 每5秒检查一次是否有新数据（用于同步多个后台标签页）
         setInterval(loadHistory, 5000);
     </script>
 </body>
