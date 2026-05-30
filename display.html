@@ -12,6 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
+
 *{
     margin:0;
     padding:0;
@@ -20,6 +21,7 @@
 
 body{
     font-family:'Bricolage Grotesque',sans-serif;
+
     background:
         linear-gradient(
             135deg,
@@ -27,49 +29,42 @@ body{
             #14162d 50%,
             #10182d 100%
         );
+
     min-height:100vh;
+
     display:flex;
     align-items:center;
     justify-content:center;
+
     padding:20px;
+
     color:#e0e0e0;
-    overflow:hidden;
+
+    overflow-x:hidden;
+    overflow-y:auto;
+
     position:relative;
 }
 
 body::before{
     content:'';
+
     position:fixed;
     inset:0;
 
     background:
-        radial-gradient(
-            circle at 20% 50%,
-            rgba(255,255,255,0.03),
-            transparent 50%
-        ),
-        radial-gradient(
-            circle at 80% 80%,
-            rgba(180,180,180,0.05),
-            transparent 50%
-        ),
-        radial-gradient(
-            circle at 40% 20%,
-            rgba(255,255,255,0.02),
-            transparent 50%
-        );
+        radial-gradient(circle at 20% 50%, rgba(255,255,255,.03), transparent 50%),
+        radial-gradient(circle at 80% 80%, rgba(180,180,180,.05), transparent 50%),
+        radial-gradient(circle at 40% 20%, rgba(255,255,255,.02), transparent 50%);
+
+    pointer-events:none;
 
     animation:drift 20s ease-in-out infinite;
-    pointer-events:none;
 }
 
 @keyframes drift{
-    0%,100%{
-        transform:translate(0,0);
-    }
-    50%{
-        transform:translate(20px,-20px);
-    }
+    0%,100%{transform:translate(0,0);}
+    50%{transform:translate(20px,-20px);}
 }
 
 .container{
@@ -82,9 +77,9 @@ body::before{
 
     padding:50px;
 
-    backdrop-filter:blur(15px);
-
     border:2px solid #b8b8b8;
+
+    backdrop-filter:blur(15px);
 
     box-shadow:
         0 30px 80px rgba(0,0,0,.8),
@@ -92,42 +87,20 @@ body::before{
         0 0 30px rgba(255,255,255,.05);
 
     position:relative;
-    z-index:1;
-}
-
-    .container::before,
-.container::after{
-    content:'✦';
-    position:absolute;
-
-    color:#cfcfcf;
-
-    font-size:32px;
-
-    text-shadow:
-        0 0 8px rgba(255,255,255,.25);
-
-    z-index:2;
-}
-
-.container::before{
-    top:12px;
-    left:18px;
-}
-
-.container::after{
-    top:12px;
-    right:18px;
 }
 
 .corner{
     position:absolute;
+
     color:#bfbfbf;
+
     font-size:22px;
+
     opacity:.7;
+
     pointer-events:none;
 }
-    
+
 h1{
     text-align:center;
 
@@ -137,11 +110,9 @@ h1{
 
     font-weight:normal;
 
-    color:#ffffff;
+    color:white;
 
     margin-bottom:50px;
-
-    letter-spacing:3px;
 
     text-shadow:
         0 0 10px rgba(255,255,255,.3),
@@ -151,18 +122,13 @@ h1{
 .display-grid{
     display:grid;
     grid-template-columns:1fr 1fr;
-    gap:50px;
+    gap:40px;
     margin-bottom:40px;
-}
-
-@media(max-width:900px){
-    .display-grid{
-        grid-template-columns:1fr;
-    }
 }
 
 .display-card{
     position:relative;
+
     overflow:hidden;
 
     background:
@@ -185,25 +151,28 @@ h1{
         inset 0 -1px 0 rgba(0,0,0,.35),
         0 10px 30px rgba(0,0,0,.4);
 
-    transition:.4s;
+    transition:.3s;
 }
+
 .display-card::before{
     content:'❦ ❦ ❦';
+
     position:absolute;
+
     top:8px;
     left:50%;
+
     transform:translateX(-50%);
 
     color:#d9d9d9;
+
     font-size:14px;
+
     letter-spacing:8px;
 }
 
 .display-card:hover{
-    transform:translateY(-6px);
-
-    box-shadow:
-        0 20px 50px rgba(255,255,255,.12);
+    transform:translateY(-4px);
 }
 
 .display-card.next{
@@ -211,25 +180,10 @@ h1{
     filter:saturate(.4);
 }
 
-.display-card.next::before{
-    background:
-        linear-gradient(
-            90deg,
-            transparent,
-            #8a8a8a,
-            transparent
-        );
-}
-
 .card-label{
     font-size:14px;
-
     letter-spacing:2px;
-
-    text-transform:uppercase;
-
     margin-bottom:20px;
-
     color:#dddddd;
 }
 
@@ -238,15 +192,15 @@ h1{
 }
 
 .card-main{
-    font-size:72px;
+    font-size:clamp(32px,8vw,72px);
 
     font-weight:800;
 
-    color:#ffffff;
-
-    letter-spacing:4px;
+    color:white;
 
     margin-bottom:25px;
+
+    word-break:break-word;
 
     text-shadow:
         0 0 15px rgba(255,255,255,.18);
@@ -254,9 +208,6 @@ h1{
 
 .display-card.next .card-main{
     color:#9a9a9a;
-
-    text-shadow:
-        0 0 10px rgba(150,150,150,.12);
 }
 
 .card-time{
@@ -269,10 +220,6 @@ h1{
     font-size:16px;
 }
 
-.display-card.next .card-time{
-    border-top-color:rgba(120,120,120,.15);
-}
-
 .time-label{
     display:block;
 
@@ -282,11 +229,7 @@ h1{
 
     letter-spacing:1px;
 
-    color:#d0d0d0;
-}
-
-.display-card.next .time-label{
-    color:#8a8a8a;
+    color:#cfcfcf;
 }
 
 .refresh-btn{
@@ -314,17 +257,10 @@ h1{
     font-family:'Bricolage Grotesque',sans-serif;
 
     font-weight:700;
-
-    letter-spacing:2px;
-
-    transition:.3s;
 }
 
 .refresh-btn:hover{
     transform:translateY(-2px);
-
-    box-shadow:
-        0 10px 25px rgba(255,255,255,.15);
 }
 
 .no-data{
@@ -335,19 +271,23 @@ h1{
 
 .last-update{
     margin-top:35px;
+
     text-align:center;
+
     font-size:13px;
+
     color:#888;
 }
 
 .status-indicator{
     width:8px;
     height:8px;
+
     display:inline-block;
 
     border-radius:50%;
 
-    background:#ffffff;
+    background:white;
 
     margin-right:8px;
 
@@ -355,39 +295,42 @@ h1{
 }
 
 @keyframes pulse{
-    0%,100%{
-        opacity:1;
-    }
-    50%{
-        opacity:.3;
-    }
+    0%,100%{opacity:1;}
+    50%{opacity:.3;}
 }
 
 @media(max-width:768px){
 
     .container{
-        padding:30px;
+        padding:25px;
     }
 
     h1{
-        font-size:40px;
+        font-size:30px;
+        margin-bottom:25px;
     }
 
-    .card-main{
-        font-size:48px;
+    .display-grid{
+        grid-template-columns:1fr;
+        gap:20px;
+    }
+
+    .display-card{
+        padding:25px;
     }
 }
+
 </style>
 </head>
 
 <body>
 
 <div class="container">
-<div class="corner" style="top:15px;left:20px;">❦</div>
-<div class="corner" style="top:15px;right:20px;">❦</div>
-<div class="corner" style="bottom:15px;left:20px;">❦</div>
-<div class="corner" style="bottom:15px;right:20px;">❦</div>
-    </div>
+
+    <div class="corner" style="top:15px;left:20px;">❦</div>
+    <div class="corner" style="top:15px;right:20px;">❦</div>
+    <div class="corner" style="bottom:15px;left:20px;">❦</div>
+    <div class="corner" style="bottom:15px;right:20px;">❦</div>
 
     <h1>✦ Front Status ✦</h1>
 
@@ -403,9 +346,7 @@ h1{
 
     <div class="last-update">
         <span class="status-indicator"></span>
-        <span id="updateTime">
-            等待数据中...
-        </span>
+        <span id="updateTime">等待数据中...</span>
     </div>
 
 </div>
@@ -418,15 +359,14 @@ function refreshDisplay(){
 
 function loadAndDisplay(){
 
-    let data = null;
+    let data=null;
 
     try{
-        data = JSON.parse(
+        data=JSON.parse(
             localStorage.getItem('currentFrontingData')
         );
-    }
-    catch(error){
-        console.error(error);
+    }catch(e){
+        console.error(e);
     }
 
     if(!data){
@@ -440,54 +380,39 @@ function loadAndDisplay(){
             </div>
         `;
 
-        document.getElementById('updateTime').textContent =
-            '暂无数据';
-
         return;
     }
 
-    const formatTime = (value)=>{
+    const formatTime=(value)=>{
 
-        if(!value){
-            return '--:--';
-        }
+        if(!value) return '--:--';
 
-        const date = new Date(value);
+        const date=new Date(value);
 
-        if(isNaN(date.getTime())){
-            return '--:--';
-        }
+        if(isNaN(date.getTime())) return '--:--';
 
-        return date.toLocaleString(
-            'zh-CN',
-            {
-                month:'2-digit',
-                day:'2-digit',
-                hour:'2-digit',
-                minute:'2-digit',
-                second:'2-digit'
-            }
-        );
+        return date.toLocaleString('zh-CN',{
+            month:'2-digit',
+            day:'2-digit',
+            hour:'2-digit',
+            minute:'2-digit',
+            second:'2-digit'
+        });
     };
 
-    document.getElementById('displayContent').innerHTML = `
+    document.getElementById('displayContent').innerHTML=`
         <div class="display-grid">
 
             <div class="display-card">
 
-                <div class="card-label">
-                    ◆ 现在主导 ◆
-                </div>
+                <div class="card-label">◆ 现在主导 ◆</div>
 
                 <div class="card-main">
                     ${data.nowFronting || '--'}
                 </div>
 
                 <div class="card-time">
-                    <span class="time-label">
-                        主导时间
-                    </span>
-
+                    <span class="time-label">主导时间</span>
                     ${formatTime(data.nowFrontingTime)}
                 </div>
 
@@ -495,19 +420,14 @@ function loadAndDisplay(){
 
             <div class="display-card next">
 
-                <div class="card-label">
-                    ◆ 预备主导 ◆
-                </div>
+                <div class="card-label">◆ 预备主导 ◆</div>
 
                 <div class="card-main">
                     ${data.nextFronting || '--'}
                 </div>
 
                 <div class="card-time">
-                    <span class="time-label">
-                        预计时间
-                    </span>
-
+                    <span class="time-label">预计时间</span>
                     ${formatTime(data.nextFrontingTime)}
                 </div>
 
@@ -517,24 +437,11 @@ function loadAndDisplay(){
     `;
 
     document.getElementById('updateTime').textContent =
-        '最后更新：' +
-        new Date().toLocaleString('zh-CN');
+        '最后更新：' + new Date().toLocaleString('zh-CN');
 }
 
-window.addEventListener(
-    'load',
-    loadAndDisplay
-);
-
-window.addEventListener(
-    'storage',
-    loadAndDisplay
-);
-
-setInterval(
-    loadAndDisplay,
-    5000
-);
+window.addEventListener('load',loadAndDisplay);
+window.addEventListener('storage',loadAndDisplay);
 
 </script>
 
