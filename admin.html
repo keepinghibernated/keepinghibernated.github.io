@@ -410,6 +410,10 @@ alert("Wrong password");
 
 const MEMBERS = [
 
+{
+name:"未指定",
+id:"default"
+},
 {name:"Lithium",id:"Lithium"},
 {name:"B Minten",id:"BMinten"},
 {name:"Mahiru",id:"Mahiru"},
@@ -494,6 +498,9 @@ nextSelect.addEventListener(
 updateNextPreview
 );
 
+currentSelect.value = "default";
+nextSelect.value = "default";
+  
 updateCurrentPreview();
 updateNextPreview();
 
@@ -628,6 +635,25 @@ localStorage.setItem(
 "currentFrontingData",
 JSON.stringify(entry)
 );
+
+currentSelect.value =
+entry.nowFrontingId || "default";
+
+nextSelect.value =
+entry.nextFrontingId || "default";
+
+updateCurrentPreview();
+updateNextPreview();
+
+document.getElementById(
+"currentTime"
+).value =
+entry.nowFrontingTime || "";
+
+document.getElementById(
+"nextTime"
+).value =
+entry.nextFrontingTime || "";
 
 alert("Restored.");
 
