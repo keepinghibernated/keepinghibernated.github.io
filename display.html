@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fronting 展示 - 实时信息面板</title>
+    <title>8前台状态板8</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lora:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -289,7 +289,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>✦ Fronting 展示 ✦</h1>
+        <h1>✦ 前台状态板 ✦</h1>
 
         <div id="displayContent">
             <div class="no-data">
@@ -339,19 +339,19 @@
             document.getElementById('displayContent').innerHTML = `
                 <div class="display-grid">
                     <div class="display-card">
-                        <div class="card-label">◆ 现在 Fronting ◆</div>
+                        <div class="card-label">◆ 现在主导 ◆</div>
                         <div class="card-main">${data.nowFronting}</div>
                         <div class="card-time">
-                            <span class="time-label">时间</span>
+                            <span class="time-label"主导时间</span>
                             ${formatTime(data.nowFrontingTime)}
                         </div>
                     </div>
 
                     <div class="display-card next">
-                        <div class="card-label">◆ 下一个 Fronting ◆</div>
+                        <div class="card-label">◆ 预备主导 ◆</div>
                         <div class="card-main">${data.nextFronting}</div>
                         <div class="card-time">
-                            <span class="time-label">时间</span>
+                            <span class="time-label">预计时间</span>
                             ${formatTime(data.nextFrontingTime)}
                         </div>
                     </div>
