@@ -1,370 +1,542 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>8前台状态板8</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lora:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            font-family: 'Lora', 'Georgia', serif;
-            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #16213e 100%);
-            min-height: 100vh;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
-            color: #e0e0e0;
-            position: relative;
-            overflow: hidden;
-        }
+<title>前台状态板</title>
 
-        /* 神秘背景效果 */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(154, 137, 181, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(75, 0, 130, 0.08) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(128, 0, 128, 0.04) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-            animation: drift 20s ease-in-out infinite;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-        @keyframes drift {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(20px, -20px); }
-        }
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-        .container {
-            width: 100%;
-            max-width: 1000px;
-            background: rgba(15, 15, 35, 0.9);
-            border-radius: 20px;
-            box-shadow: 
-                0 30px 80px rgba(0, 0, 0, 0.7),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05),
-                0 0 40px rgba(154, 137, 181, 0.1);
-            padding: 50px;
-            backdrop-filter: blur(15px);
-            border: 1px solid rgba(154, 137, 181, 0.15);
-            position: relative;
-            z-index: 1;
-        }
+<style>
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-        h1 {
-            text-align: center;
-            color: #9a89b5;
-            margin-bottom: 50px;
-            font-family: 'Playfair Display', serif;
-            font-size: 42px;
-            font-weight: 700;
-            letter-spacing: 4px;
-            text-shadow: 0 4px 15px rgba(154, 137, 181, 0.3);
-            word-spacing: 3px;
-        }
+body{
+    font-family:'Bricolage Grotesque',sans-serif;
+    background:
+        linear-gradient(
+            135deg,
+            #0a0e27 0%,
+            #14162d 50%,
+            #10182d 100%
+        );
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:20px;
+    color:#e0e0e0;
+    overflow:hidden;
+    position:relative;
+}
 
-        .display-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 50px;
-            margin-bottom: 40px;
-        }
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
 
-        @media (max-width: 900px) {
-            .display-grid {
-                grid-template-columns: 1fr;
-                gap: 40px;
-            }
-        }
+    background:
+        radial-gradient(
+            circle at 20% 50%,
+            rgba(255,255,255,0.03),
+            transparent 50%
+        ),
+        radial-gradient(
+            circle at 80% 80%,
+            rgba(180,180,180,0.05),
+            transparent 50%
+        ),
+        radial-gradient(
+            circle at 40% 20%,
+            rgba(255,255,255,0.02),
+            transparent 50%
+        );
 
-        .display-card {
-            background: rgba(20, 20, 40, 0.8);
-            border-radius: 15px;
-            padding: 40px;
-            color: white;
-            text-align: center;
-            box-shadow: 
-                0 15px 40px rgba(154, 137, 181, 0.15),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
-            transition: all 0.4s ease;
-            border: 2px solid rgba(154, 137, 181, 0.3);
-            position: relative;
-            overflow: hidden;
-        }
+    animation:drift 20s ease-in-out infinite;
+    pointer-events:none;
+}
 
-        .display-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, #9a89b5, transparent);
-        }
+@keyframes drift{
+    0%,100%{
+        transform:translate(0,0);
+    }
+    50%{
+        transform:translate(20px,-20px);
+    }
+}
 
-        .display-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 
-                0 25px 60px rgba(154, 137, 181, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            border-color: #9a89b5;
-        }
+.container{
+    width:100%;
+    max-width:1000px;
 
-        .display-card.next {
-            border-color: rgba(147, 112, 219, 0.3);
-        }
+    background:rgba(12,12,20,.92);
 
-        .display-card.next::before {
-            background: linear-gradient(90deg, transparent, #9370db, transparent);
-        }
+    border-radius:24px;
 
-        .display-card.next:hover {
-            box-shadow: 
-                0 25px 60px rgba(147, 112, 219, 0.25),
-                inset 0 1px 0 rgba(255, 255, 255, 0.1);
-            border-color: #9370db;
-        }
+    padding:50px;
 
-        .card-label {
-            font-size: 14px;
-            opacity: 0.85;
-            margin-bottom: 20px;
-            font-weight: 500;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-family: 'Montserrat', sans-serif;
-            color: #9a89b5;
-        }
+    backdrop-filter:blur(15px);
 
-        .display-card.next .card-label {
-            color: #9370db;
-        }
+    border:2px solid #b8b8b8;
 
-        .card-main {
-            font-size: 72px;
-            font-weight: 900;
-            margin-bottom: 30px;
-            letter-spacing: 5px;
-            font-family: 'Playfair Display', serif;
-            color: #9a89b5;
-            text-shadow: 0 4px 20px rgba(154, 137, 181, 0.3);
-        }
+    box-shadow:
+        0 30px 80px rgba(0,0,0,.8),
+        inset 0 0 0 1px rgba(255,255,255,.15),
+        0 0 30px rgba(255,255,255,.05);
 
-        .display-card.next .card-main {
-            color: #9370db;
-            text-shadow: 0 4px 20px rgba(147, 112, 219, 0.3);
-        }
+    position:relative;
+    z-index:1;
+}
 
-        .card-time {
-            font-size: 18px;
-            opacity: 0.9;
-            margin-top: 25px;
-            padding-top: 25px;
-            border-top: 2px solid rgba(154, 137, 181, 0.2);
-            color: #c0c0c0;
-        }
+    .container::before,
+.container::after{
+    content:'✦';
+    position:absolute;
 
-        .display-card.next .card-time {
-            border-top-color: rgba(147, 112, 219, 0.2);
-        }
+    color:#cfcfcf;
 
-        .time-label {
-            font-size: 12px;
-            opacity: 0.75;
-            display: block;
-            margin-bottom: 10px;
-            font-family: 'Montserrat', sans-serif;
-            letter-spacing: 1px;
-            color: #9a89b5;
-        }
+    font-size:32px;
 
-        .display-card.next .time-label {
-            color: #9370db;
-        }
+    text-shadow:
+        0 0 8px rgba(255,255,255,.25);
 
-        .refresh-btn {
-            display: block;
-            margin: 0 auto;
-            padding: 14px 40px;
-            background: linear-gradient(135deg, #9a89b5 0%, #b5a3d0 100%);
-            color: #0a0e27;
-            border: 1px solid #9a89b5;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-family: 'Montserrat', sans-serif;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            box-shadow: 0 10px 30px rgba(154, 137, 181, 0.2);
-        }
+    z-index:2;
+}
 
-        .refresh-btn:hover {
-            background: linear-gradient(135deg, #b5a3d0 0%, #9a89b5 100%);
-            transform: translateY(-3px);
-            box-shadow: 0 15px 40px rgba(154, 137, 181, 0.35);
-        }
+.container::before{
+    top:12px;
+    left:18px;
+}
 
-        .refresh-btn:active {
-            transform: translateY(-1px);
-        }
+.container::after{
+    top:12px;
+    right:18px;
+}
 
-        .no-data {
-            text-align: center;
-            padding: 60px 30px;
-            color: #666;
-            font-size: 18px;
-            font-style: italic;
-        }
+.corner{
+    position:absolute;
+    color:#bfbfbf;
+    font-size:22px;
+    opacity:.7;
+    pointer-events:none;
+}
+    
+h1{
+    text-align:center;
 
-        .no-data p {
-            margin-bottom: 15px;
-        }
+    font-family:'UnifrakturMaguntia',cursive;
 
-        .last-update {
-            text-align: center;
-            color: #999;
-            font-size: 13px;
-            margin-top: 35px;
-            font-family: 'Montserrat', sans-serif;
-            letter-spacing: 1px;
-        }
+    font-size:54px;
 
-        .status-indicator {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background: #9a89b5;
-            border-radius: 50%;
-            margin-right: 8px;
-            box-shadow: 0 0 10px rgba(154, 137, 181, 0.6);
-            animation: pulse 2s ease-in-out infinite;
-        }
+    font-weight:normal;
 
-        @keyframes pulse {
-            0%, 100% {
-                opacity: 1;
-                box-shadow: 0 0 10px rgba(154, 137, 181, 0.6);
-            }
-            50% {
-                opacity: 0.4;
-                box-shadow: 0 0 20px rgba(154, 137, 181, 0.3);
-            }
-        }
+    color:#ffffff;
 
-        @media (max-width: 768px) {
-            .container {
-                padding: 30px;
-            }
+    margin-bottom:50px;
 
-            h1 {
-                font-size: 32px;
-                margin-bottom: 30px;
-            }
+    letter-spacing:3px;
 
-            .card-main {
-                font-size: 48px;
-            }
+    text-shadow:
+        0 0 10px rgba(255,255,255,.3),
+        0 0 20px rgba(255,255,255,.15);
+}
 
-            .card-time {
-                font-size: 16px;
-            }
-        }
-    </style>
+.display-grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:50px;
+    margin-bottom:40px;
+}
+
+@media(max-width:900px){
+    .display-grid{
+        grid-template-columns:1fr;
+    }
+}
+
+.display-card{
+    position:relative;
+    overflow:hidden;
+
+    background:
+        linear-gradient(
+            180deg,
+            rgba(40,40,55,.75),
+            rgba(18,18,30,.85)
+        );
+
+    border-radius:16px;
+
+    padding:40px;
+
+    text-align:center;
+
+    border:1px solid rgba(210,210,210,.35);
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.12),
+        inset 0 -1px 0 rgba(0,0,0,.35),
+        0 10px 30px rgba(0,0,0,.4);
+
+    transition:.4s;
+}
+.display-card::before{
+    content:'❦ ❦ ❦';
+    position:absolute;
+    top:8px;
+    left:50%;
+    transform:translateX(-50%);
+
+    color:#d9d9d9;
+    font-size:14px;
+    letter-spacing:8px;
+}
+
+.display-card:hover{
+    transform:translateY(-6px);
+
+    box-shadow:
+        0 20px 50px rgba(255,255,255,.12);
+}
+
+.display-card.next{
+    border-color:rgba(120,120,120,.45);
+    filter:saturate(.4);
+}
+
+.display-card.next::before{
+    background:
+        linear-gradient(
+            90deg,
+            transparent,
+            #8a8a8a,
+            transparent
+        );
+}
+
+.card-label{
+    font-size:14px;
+
+    letter-spacing:2px;
+
+    text-transform:uppercase;
+
+    margin-bottom:20px;
+
+    color:#dddddd;
+}
+
+.display-card.next .card-label{
+    color:#8f8f8f;
+}
+
+.card-main{
+    font-size:72px;
+
+    font-weight:800;
+
+    color:#ffffff;
+
+    letter-spacing:4px;
+
+    margin-bottom:25px;
+
+    text-shadow:
+        0 0 15px rgba(255,255,255,.18);
+}
+
+.display-card.next .card-main{
+    color:#9a9a9a;
+
+    text-shadow:
+        0 0 10px rgba(150,150,150,.12);
+}
+
+.card-time{
+    border-top:1px solid rgba(255,255,255,.12);
+
+    padding-top:20px;
+
+    color:#d0d0d0;
+
+    font-size:16px;
+}
+
+.display-card.next .card-time{
+    border-top-color:rgba(120,120,120,.15);
+}
+
+.time-label{
+    display:block;
+
+    margin-bottom:8px;
+
+    font-size:12px;
+
+    letter-spacing:1px;
+
+    color:#d0d0d0;
+}
+
+.display-card.next .time-label{
+    color:#8a8a8a;
+}
+
+.refresh-btn{
+    display:block;
+
+    margin:0 auto;
+
+    padding:14px 40px;
+
+    border:none;
+
+    border-radius:8px;
+
+    cursor:pointer;
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #dcdcdc
+        );
+
+    color:#111;
+
+    font-family:'Bricolage Grotesque',sans-serif;
+
+    font-weight:700;
+
+    letter-spacing:2px;
+
+    transition:.3s;
+}
+
+.refresh-btn:hover{
+    transform:translateY(-2px);
+
+    box-shadow:
+        0 10px 25px rgba(255,255,255,.15);
+}
+
+.no-data{
+    text-align:center;
+    padding:60px;
+    color:#999;
+}
+
+.last-update{
+    margin-top:35px;
+    text-align:center;
+    font-size:13px;
+    color:#888;
+}
+
+.status-indicator{
+    width:8px;
+    height:8px;
+    display:inline-block;
+
+    border-radius:50%;
+
+    background:#ffffff;
+
+    margin-right:8px;
+
+    animation:pulse 2s infinite;
+}
+
+@keyframes pulse{
+    0%,100%{
+        opacity:1;
+    }
+    50%{
+        opacity:.3;
+    }
+}
+
+@media(max-width:768px){
+
+    .container{
+        padding:30px;
+    }
+
+    h1{
+        font-size:40px;
+    }
+
+    .card-main{
+        font-size:48px;
+    }
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>✦ 前台状态板 ✦</h1>
 
-        <div id="displayContent">
-            <div class="no-data">
-                <p>◈ 加载中 ◈</p>
-            </div>
-        </div>
+<div class="container">
+<div class="corner" style="top:15px;left:20px;">❦</div>
+<div class="corner" style="top:15px;right:20px;">❦</div>
+<div class="corner" style="bottom:15px;left:20px;">❦</div>
+<div class="corner" style="bottom:15px;right:20px;">❦</div>
+    </div>
 
-        <button class="refresh-btn" onclick="refreshDisplay()">✦ 刷新 ✦</button>
+    <h1>✦ Front Status ✦</h1>
 
-        <div class="last-update">
-            <span class="status-indicator"></span>
-            <span id="updateTime">等待数据中...</span>
+    <div id="displayContent">
+        <div class="no-data">
+            <p>◈ 加载中 ◈</p>
         </div>
     </div>
 
-    <script>
-        function refreshDisplay() {
-            loadAndDisplay();
+    <button class="refresh-btn" onclick="refreshDisplay()">
+        ✦ 刷新 ✦
+    </button>
+
+    <div class="last-update">
+        <span class="status-indicator"></span>
+        <span id="updateTime">
+            等待数据中...
+        </span>
+    </div>
+
+</div>
+
+<script>
+
+function refreshDisplay(){
+    loadAndDisplay();
+}
+
+function loadAndDisplay(){
+
+    let data = null;
+
+    try{
+        data = JSON.parse(
+            localStorage.getItem('currentFrontingData')
+        );
+    }
+    catch(error){
+        console.error(error);
+    }
+
+    if(!data){
+
+        document.getElementById('displayContent').innerHTML=`
+            <div class="no-data">
+                <p>◈ 暂无数据 ◈</p>
+                <p style="margin-top:10px;font-size:14px;">
+                    OB的成员没有提交数据
+                </p>
+            </div>
+        `;
+
+        document.getElementById('updateTime').textContent =
+            '暂无数据';
+
+        return;
+    }
+
+    const formatTime = (value)=>{
+
+        if(!value){
+            return '--:--';
         }
 
-        function loadAndDisplay() {
-            const data = JSON.parse(localStorage.getItem('currentFrontingData'));
+        const date = new Date(value);
 
-            if (!data) {
-                document.getElementById('displayContent').innerHTML = `
-                    <div class="no-data">
-                        <p>◈ 暂无数据 ◈</p>
-                        <p style="margin-top: 15px; font-size: 14px; opacity: 0.7;">OB的成员没有提交数据</p>
-                    </div>
-                `;
-                document.getElementById('updateTime').textContent = '暂无数据';
-                return;
+        if(isNaN(date.getTime())){
+            return '--:--';
+        }
+
+        return date.toLocaleString(
+            'zh-CN',
+            {
+                month:'2-digit',
+                day:'2-digit',
+                hour:'2-digit',
+                minute:'2-digit',
+                second:'2-digit'
             }
+        );
+    };
 
-            const formatTime = (dateTimeString) => {
-                if (!dateTimeString) return '--:--';
-                const date = new Date(dateTimeString);
-                return date.toLocaleString('zh-CN', {
-                    month: '2-digit',
-                    day: '2-digit',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    second: '2-digit'
-                });
-            };
+    document.getElementById('displayContent').innerHTML = `
+        <div class="display-grid">
 
-            document.getElementById('displayContent').innerHTML = `
-                <div class="display-grid">
-                    <div class="display-card">
-                        <div class="card-label">◆ 现在主导 ◆</div>
-                        <div class="card-main">${data.nowFronting}</div>
-                        <div class="card-time">
-                            <span class="time-label"主导时间</span>
-                            ${formatTime(data.nowFrontingTime)}
-                        </div>
-                    </div>
+            <div class="display-card">
 
-                    <div class="display-card next">
-                        <div class="card-label">◆ 预备主导 ◆</div>
-                        <div class="card-main">${data.nextFronting}</div>
-                        <div class="card-time">
-                            <span class="time-label">预计时间</span>
-                            ${formatTime(data.nextFrontingTime)}
-                        </div>
-                    </div>
+                <div class="card-label">
+                    ◆ 现在主导 ◆
                 </div>
-            `;
 
-            const updateTimeElement = document.getElementById('updateTime');
-            const now = new Date();
-            updateTimeElement.textContent = `最后更新: ${now.toLocaleString('zh-CN')}`;
-        }
+                <div class="card-main">
+                    ${data.nowFronting || '--'}
+                </div>
 
-        // 初始加载一次
-        window.addEventListener('load', loadAndDisplay);
-    </script>
+                <div class="card-time">
+                    <span class="time-label">
+                        主导时间
+                    </span>
+
+                    ${formatTime(data.nowFrontingTime)}
+                </div>
+
+            </div>
+
+            <div class="display-card next">
+
+                <div class="card-label">
+                    ◆ 预备主导 ◆
+                </div>
+
+                <div class="card-main">
+                    ${data.nextFronting || '--'}
+                </div>
+
+                <div class="card-time">
+                    <span class="time-label">
+                        预计时间
+                    </span>
+
+                    ${formatTime(data.nextFrontingTime)}
+                </div>
+
+            </div>
+
+        </div>
+    `;
+
+    document.getElementById('updateTime').textContent =
+        '最后更新：' +
+        new Date().toLocaleString('zh-CN');
+}
+
+window.addEventListener(
+    'load',
+    loadAndDisplay
+);
+
+window.addEventListener(
+    'storage',
+    loadAndDisplay
+);
+
+setInterval(
+    loadAndDisplay,
+    5000
+);
+
+</script>
+
 </body>
 </html>
