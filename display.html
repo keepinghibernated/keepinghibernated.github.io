@@ -4,6 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Fronting 展示 - 实时信息面板</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lora:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
@@ -12,191 +15,331 @@
         }
 
         body {
-            font-family: 'Microsoft YaHei', Arial, sans-serif;
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            font-family: 'Lora', 'Georgia', serif;
+            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #16213e 100%);
             min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
+            color: #e0e0e0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* 神秘背景效果 */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                radial-gradient(circle at 20% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 50%),
+                radial-gradient(circle at 80% 80%, rgba(75, 0, 130, 0.08) 0%, transparent 50%),
+                radial-gradient(circle at 40% 20%, rgba(128, 0, 128, 0.04) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: 0;
+            animation: drift 20s ease-in-out infinite;
+        }
+
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0); }
+            50% { transform: translate(20px, -20px); }
         }
 
         .container {
             width: 100%;
-            max-width: 900px;
-            background: white;
-            border-radius: 15px;
-            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
-            padding: 40px;
+            max-width: 1000px;
+            background: rgba(15, 15, 35, 0.9);
+            border-radius: 20px;
+            box-shadow: 
+                0 30px 80px rgba(0, 0, 0, 0.7),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05),
+                0 0 40px rgba(212, 175, 55, 0.1);
+            padding: 50px;
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(212, 175, 55, 0.15);
+            position: relative;
+            z-index: 1;
         }
 
         h1 {
             text-align: center;
-            color: #333;
-            margin-bottom: 40px;
-            font-size: 32px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            color: #d4af37;
+            margin-bottom: 50px;
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+            word-spacing: 3px;
         }
 
         .display-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            margin-bottom: 30px;
+            gap: 50px;
+            margin-bottom: 40px;
         }
 
-        @media (max-width: 768px) {
+        @media (max-width: 900px) {
             .display-grid {
                 grid-template-columns: 1fr;
-                gap: 30px;
+                gap: 40px;
             }
         }
 
         .display-card {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            border-radius: 12px;
-            padding: 30px;
+            background: rgba(20, 20, 40, 0.8);
+            border-radius: 15px;
+            padding: 40px;
             color: white;
             text-align: center;
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
-            transition: transform 0.3s ease;
+            box-shadow: 
+                0 15px 40px rgba(212, 175, 55, 0.15),
+                inset 0 1px 0 rgba(255, 255, 255, 0.05);
+            transition: all 0.4s ease;
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .display-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, #d4af37, transparent);
         }
 
         .display-card:hover {
-            transform: translateY(-5px);
+            transform: translateY(-8px);
+            box-shadow: 
+                0 25px 60px rgba(212, 175, 55, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-color: #d4af37;
         }
 
         .display-card.next {
-            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
-            box-shadow: 0 8px 20px rgba(245, 87, 108, 0.3);
+            border-color: rgba(147, 112, 219, 0.3);
+        }
+
+        .display-card.next::before {
+            background: linear-gradient(90deg, transparent, #9370db, transparent);
+        }
+
+        .display-card.next:hover {
+            box-shadow: 
+                0 25px 60px rgba(147, 112, 219, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border-color: #9370db;
         }
 
         .card-label {
             font-size: 14px;
-            opacity: 0.9;
-            margin-bottom: 15px;
+            opacity: 0.85;
+            margin-bottom: 20px;
             font-weight: 500;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
             text-transform: uppercase;
+            font-family: 'Montserrat', sans-serif;
+            color: #d4af37;
+        }
+
+        .display-card.next .card-label {
+            color: #9370db;
         }
 
         .card-main {
-            font-size: 56px;
-            font-weight: bold;
-            margin-bottom: 20px;
-            letter-spacing: 3px;
+            font-size: 72px;
+            font-weight: 900;
+            margin-bottom: 30px;
+            letter-spacing: 5px;
+            font-family: 'Playfair Display', serif;
+            color: #d4af37;
+            text-shadow: 0 4px 20px rgba(212, 175, 55, 0.3);
+        }
+
+        .display-card.next .card-main {
+            color: #9370db;
+            text-shadow: 0 4px 20px rgba(147, 112, 219, 0.3);
         }
 
         .card-time {
             font-size: 18px;
-            opacity: 0.95;
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 2px solid rgba(255, 255, 255, 0.3);
+            opacity: 0.9;
+            margin-top: 25px;
+            padding-top: 25px;
+            border-top: 2px solid rgba(212, 175, 55, 0.2);
+            color: #c0c0c0;
+        }
+
+        .display-card.next .card-time {
+            border-top-color: rgba(147, 112, 219, 0.2);
         }
 
         .time-label {
             font-size: 12px;
-            opacity: 0.85;
+            opacity: 0.75;
             display: block;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1px;
+            color: #d4af37;
+        }
+
+        .display-card.next .time-label {
+            color: #9370db;
         }
 
         .refresh-btn {
             display: block;
             margin: 0 auto;
-            padding: 12px 30px;
-            background: #4CAF50;
-            color: white;
-            border: none;
-            border-radius: 5px;
+            padding: 14px 40px;
+            background: linear-gradient(135deg, #d4af37 0%, #f0e68c 100%);
+            color: #0a0e27;
+            border: 1px solid #d4af37;
+            border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
             font-weight: 600;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            box-shadow: 0 10px 30px rgba(212, 175, 55, 0.2);
         }
 
         .refresh-btn:hover {
-            background: #45a049;
-            transform: scale(1.05);
+            background: linear-gradient(135deg, #f0e68c 0%, #d4af37 100%);
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(212, 175, 55, 0.35);
         }
 
         .refresh-btn:active {
-            transform: scale(0.98);
+            transform: translateY(-1px);
         }
 
         .no-data {
             text-align: center;
-            padding: 40px 20px;
-            color: #999;
-            font-size: 16px;
+            padding: 60px 30px;
+            color: #666;
+            font-size: 18px;
+            font-style: italic;
+        }
+
+        .no-data p {
+            margin-bottom: 15px;
         }
 
         .last-update {
             text-align: center;
             color: #999;
-            font-size: 12px;
-            margin-top: 30px;
+            font-size: 13px;
+            margin-top: 35px;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 1px;
         }
 
         .status-indicator {
             display: inline-block;
-            width: 10px;
-            height: 10px;
-            background: #4CAF50;
+            width: 8px;
+            height: 8px;
+            background: #d4af37;
             border-radius: 50%;
             margin-right: 8px;
-            animation: pulse 2s infinite;
+            box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+            animation: pulse 2s ease-in-out infinite;
         }
 
         @keyframes pulse {
             0%, 100% {
                 opacity: 1;
+                box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
             }
             50% {
-                opacity: 0.5;
+                opacity: 0.4;
+                box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
             }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 30px;
+            }
+
+            h1 {
+                font-size: 32px;
+                margin-bottom: 30px;
+            }
+
+            .card-main {
+                font-size: 48px;
+            }
+
+            .card-time {
+                font-size: 16px;
+            }
+        }
+
+        /* 优雅的加载动画 */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .display-grid {
+            animation: fadeIn 0.6s ease;
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🎭 Fronting 实时展示面板</h1>
+        <h1>✦ Fronting 展示 ✦</h1>
 
         <div id="displayContent">
-            <div class="no-data">加载数据中...</div>
+            <div class="no-data">
+                <p>◈ 加载中 ◈</p>
+            </div>
         </div>
 
-        <button class="refresh-btn" onclick="refreshDisplay()">🔄 刷新</button>
+        <button class="refresh-btn" onclick="refreshDisplay()">✦ 刷新 ✦</button>
 
         <div class="last-update">
             <span class="status-indicator"></span>
-            <span id="updateTime">等待数据...</span>
+            <span id="updateTime">等待数据中...</span>
         </div>
     </div>
 
     <script>
-        // 定期刷新数据
         function refreshDisplay() {
             loadAndDisplay();
         }
 
-        // 加载并显示数据
         function loadAndDisplay() {
             const data = JSON.parse(localStorage.getItem('currentFrontingData'));
 
             if (!data) {
                 document.getElementById('displayContent').innerHTML = `
                     <div class="no-data">
-                        <p>📭 暂无数据</p>
-                        <p style="margin-top: 10px; font-size: 14px;">请先在后台页面提交数据</p>
+                        <p>◈ 暂无数据 ◈</p>
+                        <p style="margin-top: 15px; font-size: 14px; opacity: 0.7;">请在后台页面提交数据</p>
                     </div>
                 `;
                 document.getElementById('updateTime').textContent = '暂无数据';
                 return;
             }
 
-            // 格式化时间显示
             const formatTime = (dateTimeString) => {
                 if (!dateTimeString) return '--:--';
                 const date = new Date(dateTimeString);
@@ -212,19 +355,19 @@
             document.getElementById('displayContent').innerHTML = `
                 <div class="display-grid">
                     <div class="display-card">
-                        <div class="card-label">现在 Fronting</div>
+                        <div class="card-label">◆ 现在 Fronting ◆</div>
                         <div class="card-main">${data.nowFronting}</div>
                         <div class="card-time">
-                            <span class="time-label">时间：</span>
+                            <span class="time-label">时间</span>
                             ${formatTime(data.nowFrontingTime)}
                         </div>
                     </div>
 
                     <div class="display-card next">
-                        <div class="card-label">下一个 Fronting</div>
+                        <div class="card-label">◆ 下一个 Fronting ◆</div>
                         <div class="card-main">${data.nextFronting}</div>
                         <div class="card-time">
-                            <span class="time-label">时间：</span>
+                            <span class="time-label">时间</span>
                             ${formatTime(data.nextFrontingTime)}
                         </div>
                     </div>
@@ -236,10 +379,7 @@
             updateTimeElement.textContent = `最后更新: ${now.toLocaleString('zh-CN')}`;
         }
 
-        // 初始加载
         window.addEventListener('load', loadAndDisplay);
-
-        // 每2秒自动刷新一次（同步后台数据变化）
         setInterval(loadAndDisplay, 2000);
     </script>
 </body>
