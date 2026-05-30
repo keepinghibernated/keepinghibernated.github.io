@@ -247,6 +247,35 @@ padding:20px;
 </head>
 <body>
 
+<div id="gate">
+
+<div class="container">
+
+<h1>✦ Access Required ✦</h1>
+
+<input
+type="password"
+id="passwordInput"
+placeholder="Enter Password">
+
+<div class="button-row">
+
+<button
+class="save-btn"
+onclick="checkPassword()">
+Enter
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div
+id="mainContent"
+style="display:none;">
+
 <div class="container">
 
 <h1>✦ Front Input ✦</h1>
@@ -350,6 +379,34 @@ History
 </div>
 
 <script>
+
+  const PASSWORD =
+"devourer";
+
+function checkPassword(){
+
+const value =
+document.getElementById(
+"passwordInput"
+).value;
+
+if(value === PASSWORD){
+
+document.getElementById(
+"gate"
+).style.display = "none";
+
+document.getElementById(
+"mainContent"
+).style.display = "block";
+
+}else{
+
+alert("Wrong password");
+
+}
+
+}
 
 const MEMBERS = [
 
