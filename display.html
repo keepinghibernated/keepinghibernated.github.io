@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fronting 展示 - 实时信息面板</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+            padding: 40px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 40px;
+            font-size: 32px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .display-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .display-grid {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+        }
+
+        .display-card {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 12px;
+            padding: 30px;
+            color: white;
+            text-align: center;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .display-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .display-card.next {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            box-shadow: 0 8px 20px rgba(245, 87, 108, 0.3);
+        }
+
+        .card-label {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 15px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        .card-main {
+            font-size: 56px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            letter-spacing: 3px;
+        }
+
+        .card-time {
+            font-size: 18px;
+            opacity: 0.95;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .time-label {
+            font-size: 12px;
+            opacity: 0.85;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .refresh-btn {
+            display: block;
+            margin: 0 auto;
+            padding: 12px 30px;
+            background: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .refresh-btn:hover {
+            background: #45a049;
+            transform: scale(1.05);
+        }
+
+        .refresh-btn:active {
+            transform: scale(0.98);
+        }
+
+        .no-data {
+            text-align: center;
+            padding: 40px 20px;
+            color: #999;
+            font-size: 16px;
+        }
+
+        .last-update {
+            text-align: center;
+            color: #999;
+            font-size: 12px;
+            margin-top: 30px;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #4CAF50;
+            border-radius: 50%;
+            margin-right: 8px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎭 Fronting 实时展示面板</h1>
+
+        <div id="displayContent">
+            <div class="no-data">加载数据中...</div>
+        </div>
+
+        <button class="refresh-btn" onclick="refreshDisplay()">🔄 刷新</button>
+
+        <div class="last-update">
+            <span class="status-indicator"></span>
+            <span id="updateTime">等待数据...</span>
+        </div>
+    </div>
+
+    <script>
+        // 定期刷新数据
+        function refreshDisplay() {
+            loadAndDisplay();
+        }
+
+        // 加载并显示数据
+        function loadAndDisplay() {
+            const data = JSON.parse(localStorage.getItem('currentFrontingData'));
+
+            if (!data) {
+                document.getElementById('displayContent').innerHTML = `
+                    <div class="no-data">
+                        <p>📭 暂无数据</p>
+                        <p style="margin-top: 10px; font-size: 14px;">请先在后台页面提交数据</p>
+                    </div>
+                `;
+                document.getElementById('updateTime').textContent = '暂无数据';
+                return;
+            }
+
+            // 格式化时间显示
+            const formatTime = (dateTimeString) => {
+                if (!dateTimeString) return '--:--';
+                const date = new Date(dateTimeString);
+                return date.toLocaleString('zh-CN', {
+                    month: '2-digit',
+                    day: '2-digit',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    second: '2-digit'
+                });
+            };
+
+            document.getElementById('displayContent').innerHTML = `
+                <div class="display-grid">
+                    <div class="display-card">
+                        <div class="card-label">现在 Fronting</div>
+                        <div class="card-main">${data.nowFronting}</div>
+                        <div class="card-time">
+                            <span class="time-label">时间：</span>
+                            ${formatTime(data.nowFrontingTime)}
+                        </div>
+                    </div>
+
+                    <div class="display-card next">
+                        <div class="card-label">下一个 Fronting</div>
+                        <div class="card-main">${data.nextFronting}</div>
+                        <div class="card-time">
+                            <span class="time-label">时间：</span>
+                            ${formatTime(data.nextFrontingTime)}
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            const updateTimeElement = document.getElementById('updateTime');
+            const now = new Date();
+            updateTimeElement.textContent = `最后更新: ${now.toLocaleString('zh-CN')}`;
+        }
+
+        // 初始加载
+        window.addEventListener('load', loadAndDisplay);
+
+        // 每2秒自动刷新一次（同步后台数据变化）
+        setInterval(loadAndDisplay, 2000);
+    </script>
+</body>
+</html>
