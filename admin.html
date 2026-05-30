@@ -1,508 +1,554 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>输入页 - 前台状态板</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Lora:wght@400;500;600&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        body {
-            font-family: 'Lora', 'Georgia', serif;
-            background: linear-gradient(135deg, #0a0e27 0%, #1a1a3e 50%, #16213e 100%);
-            min-height: 100vh;
-            padding: 20px;
-            color: #e0e0e0;
-            position: relative;
-            overflow-x: hidden;
-        }
+<title>Front Input Panel</title>
 
-        /* 神秘背景效果 */
-        body::before {
-            content: '';
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: 
-                radial-gradient(circle at 20% 50%, rgba(139, 69, 19, 0.03) 0%, transparent 50%),
-                radial-gradient(circle at 80% 80%, rgba(75, 0, 130, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 40% 20%, rgba(128, 0, 128, 0.03) 0%, transparent 50%);
-            pointer-events: none;
-            z-index: 0;
-        }
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-        .container {
-            max-width: 1100px;
-            margin: 0 auto;
-            background: rgba(15, 15, 35, 0.85);
-            border-radius: 15px;
-            box-shadow: 
-                0 20px 60px rgba(0, 0, 0, 0.6),
-                inset 0 1px 0 rgba(255, 255, 255, 0.05);
-            padding: 50px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            position: relative;
-            z-index: 1;
-        }
+<link href="https://fonts.googleapis.com/css2?family=UnifrakturMaguntia&family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-        h1 {
-            color: #d4af37;
-            margin-bottom: 40px;
-            text-align: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 42px;
-            font-weight: 700;
-            letter-spacing: 3px;
-            text-shadow: 0 2px 10px rgba(212, 175, 55, 0.3);
-            word-spacing: 2px;
-        }
+<style>
 
-        .form-section {
-            background: rgba(20, 20, 40, 0.9);
-            padding: 35px;
-            border-radius: 12px;
-            margin-bottom: 40px;
-            border-left: 3px solid #d4af37;
-            border-top: 1px solid rgba(212, 175, 55, 0.2);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-        }
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
-        .form-group {
-            margin-bottom: 28px;
-        }
+body{
+font-family:'Bricolage Grotesque',sans-serif;
 
-        label {
-            display: block;
-            margin-bottom: 10px;
-            color: #d4af37;
-            font-weight: 500;
-            font-size: 15px;
-            letter-spacing: 1px;
-            font-family: 'Montserrat', sans-serif;
-            text-transform: uppercase;
-        }
+background:
+linear-gradient(
+135deg,
+#080b18 0%,
+#111827 50%,
+#090d18 100%
+);
 
-        select, input[type="datetime-local"] {
-            width: 100%;
-            padding: 14px 16px;
-            border: 1px solid rgba(212, 175, 55, 0.3);
-            border-radius: 8px;
-            font-size: 15px;
-            background: rgba(30, 30, 50, 0.8);
-            color: #e0e0e0;
-            transition: all 0.3s ease;
-            font-family: 'Lora', serif;
-        }
+color:#e6e6e6;
 
-        select:focus, input[type="datetime-local"]:focus {
-            outline: none;
-            border-color: #d4af37;
-            box-shadow: 
-                0 0 0 2px rgba(212, 175, 55, 0.15),
-                inset 0 0 10px rgba(212, 175, 55, 0.05);
-            background: rgba(30, 30, 55, 0.9);
-        }
+padding:20px;
+min-height:100vh;
+}
 
-        select option {
-            background: #1a1a3e;
-            color: #e0e0e0;
-        }
+.container{
 
-        .form-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 25px;
-        }
+max-width:1000px;
+margin:auto;
 
-        @media (max-width: 768px) {
-            .form-grid {
-                grid-template-columns: 1fr;
-            }
-        }
+background:rgba(10,10,18,.95);
 
-        .button-group {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 40px;
-        }
+border:2px solid #bfbfbf;
+border-radius:24px;
 
-        button {
-            padding: 14px 35px;
-            font-size: 15px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            font-family: 'Montserrat', sans-serif;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-        }
+padding:35px;
 
-        .submit-btn {
-            background: linear-gradient(135deg, #d4af37 0%, #f0e68c 100%);
-            color: #0a0e27;
-            flex: 1;
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.25);
-            border: 1px solid #d4af37;
-        }
+box-shadow:
+0 0 30px rgba(255,255,255,.05),
+0 20px 60px rgba(0,0,0,.7);
 
-        .submit-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(212, 175, 55, 0.4);
-            background: linear-gradient(135deg, #f0e68c 0%, #d4af37 100%);
-        }
+position:relative;
+}
 
-        .submit-btn:active {
-            transform: translateY(-1px);
-        }
+.container::before{
+content:"❦";
+position:absolute;
+top:10px;
+left:15px;
+color:#d9d9d9;
+}
 
-        .view-btn {
-            background: rgba(212, 175, 55, 0.15);
-            color: #d4af37;
-            flex: 0.6;
-            border: 1px solid rgba(212, 175, 55, 0.5);
-        }
+.container::after{
+content:"❦";
+position:absolute;
+bottom:10px;
+right:15px;
+color:#d9d9d9;
+}
 
-        .view-btn:hover {
-            background: rgba(212, 175, 55, 0.25);
-            border-color: #d4af37;
-            box-shadow: 0 8px 25px rgba(212, 175, 55, 0.2);
-            transform: translateY(-2px);
-        }
+h1{
+font-family:'UnifrakturMaguntia',cursive;
+font-size:48px;
+text-align:center;
+margin-bottom:30px;
+color:white;
+}
 
-        .history-section {
-            background: rgba(20, 20, 40, 0.9);
-            padding: 35px;
-            border-radius: 12px;
-            border-left: 3px solid #8b7355;
-            border-top: 1px solid rgba(139, 115, 85, 0.2);
-            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-        }
+.section{
+margin-bottom:25px;
+}
 
-        .history-section h2 {
-            color: #d4af37;
-            margin-bottom: 25px;
-            font-size: 22px;
-            font-family: 'Playfair Display', serif;
-            letter-spacing: 2px;
-        }
+label{
+display:block;
+margin-bottom:8px;
+font-weight:600;
+}
 
-        .history-list {
-            max-height: 450px;
-            overflow-y: auto;
-        }
+select{
 
-        .history-list::-webkit-scrollbar {
-            width: 8px;
-        }
+width:100%;
+padding:12px;
 
-        .history-list::-webkit-scrollbar-track {
-            background: rgba(212, 175, 55, 0.05);
-            border-radius: 4px;
-        }
+background:#1a1a24;
+color:white;
 
-        .history-list::-webkit-scrollbar-thumb {
-            background: rgba(212, 175, 55, 0.4);
-            border-radius: 4px;
-        }
+border:1px solid #888;
+border-radius:10px;
 
-        .history-list::-webkit-scrollbar-thumb:hover {
-            background: rgba(212, 175, 55, 0.6);
-        }
+font-size:16px;
+}
 
-        .history-item {
-            background: rgba(30, 30, 55, 0.6);
-            padding: 18px;
-            margin-bottom: 12px;
-            border-radius: 8px;
-            border-left: 3px solid #d4af37;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-            border-top: 1px solid rgba(212, 175, 55, 0.1);
-            transition: all 0.3s ease;
-        }
+.card-preview{
 
-        .history-item:hover {
-            background: rgba(30, 30, 55, 0.8);
-            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.15);
-            transform: translateX(5px);
-        }
+margin-top:20px;
 
-        .history-item-content {
-            flex: 1;
-        }
+background:#14141d;
 
-        .history-time {
-            color: #999;
-            font-size: 12px;
-            margin-top: 8px;
-            font-family: 'Montserrat', sans-serif;
-        }
+border:1px solid #777;
 
-        .history-detail {
-            color: #c0c0c0;
-            font-size: 14px;
-            margin: 6px 0;
-            font-family: 'Lora', serif;
-        }
+border-radius:16px;
 
-        .history-detail strong {
-            color: #d4af37;
-        }
+padding:20px;
 
-        .delete-btn {
-            background: rgba(220, 20, 60, 0.2);
-            color: #ff6b6b;
-            padding: 6px 14px;
-            border: 1px solid rgba(255, 107, 107, 0.4);
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 12px;
-            margin-left: 12px;
-            font-family: 'Montserrat', sans-serif;
-            transition: all 0.3s ease;
-        }
+text-align:center;
+}
 
-        .delete-btn:hover {
-            background: rgba(220, 20, 60, 0.4);
-            border-color: #ff6b6b;
-            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.2);
-        }
+.card-preview img{
 
-        .empty-message {
-            color: #666;
-            text-align: center;
-            padding: 30px;
-            font-style: italic;
-            font-family: 'Lora', serif;
-        }
+width:220px;
+max-width:100%;
 
-        .notification {
-            position: fixed;
-            top: 30px;
-            right: 30px;
-            background: linear-gradient(135deg, #d4af37 0%, #f0e68c 100%);
-            color: #0a0e27;
-            padding: 18px 25px;
-            border-radius: 8px;
-            box-shadow: 0 10px 35px rgba(212, 175, 55, 0.3);
-            display: none;
-            z-index: 1000;
-            animation: slideIn 0.4s ease;
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            border: 1px solid #d4af37;
-        }
+border-radius:12px;
 
-        @keyframes slideIn {
-            from {
-                transform: translateX(400px);
-                opacity: 0;
-            }
-            to {
-                transform: translateX(0);
-                opacity: 1;
-            }
-        }
+border:1px solid #888;
+}
 
-        .notification.show {
-            display: block;
-        }
+.button-row{
 
-        @media (max-width: 1024px) {
-            .container {
-                padding: 30px;
-            }
+display:flex;
+gap:12px;
+flex-wrap:wrap;
+margin-top:20px;
+}
 
-            h1 {
-                font-size: 32px;
-            }
-        }
-    </style>
+button{
+
+padding:12px 22px;
+
+border:none;
+border-radius:10px;
+
+cursor:pointer;
+
+font-weight:700;
+font-family:'Bricolage Grotesque',sans-serif;
+}
+
+.save-btn{
+background:#d8d8d8;
+color:black;
+}
+
+.clear-btn{
+background:#555;
+color:white;
+}
+
+.history{
+
+margin-top:35px;
+}
+
+.history-item{
+
+background:#181822;
+
+border:1px solid #555;
+
+border-radius:12px;
+
+padding:12px;
+
+margin-bottom:10px;
+
+display:flex;
+justify-content:space-between;
+align-items:center;
+gap:10px;
+
+flex-wrap:wrap;
+}
+
+.history-actions{
+display:flex;
+gap:8px;
+}
+
+.small-btn{
+
+padding:8px 12px;
+font-size:13px;
+}
+
+.restore{
+background:#d7d7d7;
+color:black;
+}
+
+.delete{
+background:#7a2d2d;
+color:white;
+}
+
+.info{
+margin-top:20px;
+font-size:14px;
+color:#bdbdbd;
+}
+
+@media(max-width:768px){
+
+h1{
+font-size:30px;
+}
+
+.container{
+padding:20px;
+}
+
+}
+
+</style>
 </head>
 <body>
-    <div class="container">
-        <h1>✦ 前台状态输入 ✦</h1>
 
-        <div class="form-section">
-            <form id="frontingForm">
-                <div class="form-grid">
-                    <div class="form-group">
-                        <label for="nowFronting">现在 Fronting</label>
-                        <select id="nowFronting" required>
-                            <option value="">-- 请选择 --</option>
-                            <option value="Lithium">Lithium</option>
-                            <option value="B Minten">B Minten</option>
-                            <option value="Mahiru">Mahiru</option>
-                            <option value="V_eko">V_eko</option>
-                            <option value="L-Maelonna">L-Maelonna</option>
-                            <option value="M Anna">M Anna</option>
-                            <option value="R-Maria">R-Maria</option>
-                            <option value="'Mors'=V">Mors=V</option>
-                            <option value="'Rei'=Atlas">"Rei"=Atlas</option>
-                        </select>
-                    </div>
+<div class="container">
 
-                    <div class="form-group">
-                        <label for="nextFronting">下一个 Fronting</label>
-                        <select id="nextFronting" required>
-                            <option value="">-- 请选择 --</option>
-                            <option value="Lithium">Lithium</option>
-                            <option value="B Minten">B Minten</option>
-                            <option value="Mahiru">Mahiru</option>
-                            <option value="V_eko">V_eko</option>
-                            <option value="L-Maelonna">L-Maelonna</option>
-                            <option value="M Anna">M Anna</option>
-                            <option value="R-Maria">R-Maria</option>
-                            <option value="'Mors'=V">"Mors"=V</option>
-                            <option value="'Rei'=Atlas">"Rei"=Atlas</option>
-                        </select>
-                    </div>
+<h1>✦ Front Input ✦</h1>
 
-                    <div class="form-group">
-                        <label for="nowFrontingTime">转换时间</label>
-                        <input type="datetime-local" id="nowFrontingTime" required>
-                    </div>
+<div class="section">
 
-                    <div class="form-group">
-                        <label for="nextFrontingTime">预定转换时间</label>
-                        <input type="datetime-local" id="nextFrontingTime" required>
-                    </div>
-                </div>
+<label>Current Fronting</label>
 
-                <div class="button-group">
-                    <button type="submit" class="submit-btn">✦ 提交 ✦</button>
-                    <button type="button" class="view-btn" onclick="openDisplay()">◆ 展示 ◆</button>
-                </div>
-            </form>
-        </div>
+<select id="frontingSelect"></select>
 
-        <div class="history-section">
-            <h2>◈ 提交历史</h2>
-            <div class="history-list" id="historyList">
-                <div class="empty-message">暂无提交记录</div>
-            </div>
-        </div>
-    </div>
+</div>
 
-    <div class="notification" id="notification"></div>
+<div class="card-preview">
 
-    <script>
-        function initPage() {
-            loadHistory();
-            setDefaultDateTime();
-        }
+<img
+id="cardPreview"
+src="cards/default.png"
+alt="preview">
 
-        function setDefaultDateTime() {
-            const now = new Date();
-            const year = now.getFullYear();
-            const month = String(now.getMonth() + 1).padStart(2, '0');
-            const day = String(now.getDate()).padStart(2, '0');
-            const hour = String(now.getHours()).padStart(2, '0');
-            const minute = String(now.getMinutes()).padStart(2, '0');
+</div>
 
-            const defaultDateTime = `${year}-${month}-${day}T${hour}:${minute}`;
-            
-            document.getElementById('nowFrontingTime').value = defaultDateTime;
-            document.getElementById('nextFrontingTime').value = defaultDateTime;
-        }
+<div class="button-row">
 
-        document.getElementById('frontingForm').addEventListener('submit', function(e) {
-            e.preventDefault();
+<button
+class="save-btn"
+onclick="saveData()">
+Save
+</button>
 
-            const nowFronting = document.getElementById('nowFronting').value;
-            const nextFronting = document.getElementById('nextFronting').value;
-            const nowFrontingTime = document.getElementById('nowFrontingTime').value;
-            const nextFrontingTime = document.getElementById('nextFrontingTime').value;
+<button
+class="clear-btn"
+onclick="clearCurrent()">
+Clear
+</button>
 
-            if (!nowFronting || !nextFronting || !nowFrontingTime || !nextFrontingTime) {
-                showNotification('请填写所有字段');
-                return;
-            }
+</div>
 
-            const currentData = {
-                nowFronting: nowFronting,
-                nextFronting: nextFronting,
-                nowFrontingTime: nowFrontingTime,
-                nextFrontingTime: nextFrontingTime,
-                timestamp: new Date().toLocaleString('zh-CN')
-            };
+<div class="info">
 
-            localStorage.setItem('currentFrontingData', JSON.stringify(currentData));
+当前 display.html 将读取：
 
-            let history = JSON.parse(localStorage.getItem('frontingHistory') || '[]');
-            history.unshift(currentData);
-            history = history.slice(0, 50);
-            localStorage.setItem('frontingHistory', JSON.stringify(history));
+<br><br>
 
-            showNotification('✦ 提交成功 ✦');
-            loadHistory();
-        });
+nowFronting<br>
+nowFrontingId<br>
+nowFrontingTime
 
-        function loadHistory() {
-            const history = JSON.parse(localStorage.getItem('frontingHistory') || '[]');
-            const historyList = document.getElementById('historyList');
+</div>
 
-            if (history.length === 0) {
-                historyList.innerHTML = '<div class="empty-message">暂无提交记录</div>';
-                return;
-            }
+<div class="history">
 
-            historyList.innerHTML = history.map((item, index) => `
-                <div class="history-item">
-                    <div class="history-item-content">
-                        <div class="history-detail">
-                            <strong>现在:</strong> ${item.nowFronting} | 
-                            <strong>下一个:</strong> ${item.nextFronting}
-                        </div>
-                        <div class="history-detail">
-                            <strong>时间:</strong> ${item.nowFrontingTime} → ${item.nextFrontingTime}
-                        </div>
-                        <div class="history-time">提交于: ${item.timestamp}</div>
-                    </div>
-                    <button class="delete-btn" onclick="deleteHistory(${index})">删除</button>
-                </div>
-            `).join('');
-        }
+<h2 style="margin-bottom:15px;">
+History
+</h2>
 
-        function deleteHistory(index) {
-            let history = JSON.parse(localStorage.getItem('frontingHistory') || '[]');
-            history.splice(index, 1);
-            localStorage.setItem('frontingHistory', JSON.stringify(history));
-            loadHistory();
-            showNotification('✦ 已删除 ✦');
-        }
+<div id="historyList"></div>
 
-        function showNotification(message) {
-            const notification = document.getElementById('notification');
-            notification.textContent = message;
-            notification.classList.add('show');
+</div>
 
-            setTimeout(() => {
-                notification.classList.remove('show');
-            }, 3000);
-        }
+</div>
 
-        function openDisplay() {
-            window.open('display.html', 'display', 'width=1200,height=700');
-        }
+<script>
 
-        window.addEventListener('load', initPage);
-        setInterval(loadHistory, 5000);
-    </script>
+const MEMBERS = [
+
+{
+name:"Lithium",
+id:"Lithium"
+},
+
+{
+name:"B Minten",
+id:"BMinten"
+},
+
+{
+name:"Mahiru",
+id:"Mahiru"
+},
+
+{
+name:"V_eko",
+id:"VEko"
+},
+
+{
+name:"L-Maelonna",
+id:"LMaelonna"
+},
+
+{
+name:"M Anna",
+id:"MAnna"
+},
+
+{
+name:"R-Maria",
+id:"RMaria"
+},
+
+{
+name:"Mors = V",
+id:"MorsV"
+},
+
+{
+name:"Rei = Atlas",
+id:"ReiAtlas"
+}
+
+];
+
+const select =
+document.getElementById("frontingSelect");
+
+MEMBERS.forEach(member=>{
+
+const option =
+document.createElement("option");
+
+option.value = member.id;
+option.textContent = member.name;
+
+select.appendChild(option);
+
+});
+
+function updatePreview(){
+
+const id = select.value;
+
+const img =
+document.getElementById("cardPreview");
+
+img.src = `cards/${id}.png`;
+
+img.onerror = ()=>{
+
+img.onerror = null;
+img.src = "cards/default.png";
+
+};
+
+}
+
+select.addEventListener(
+"change",
+updatePreview
+);
+
+updatePreview();
+
+function saveData(){
+
+const id = select.value;
+
+const member =
+MEMBERS.find(
+m=>m.id===id
+);
+
+const data = {
+
+nowFronting:member.name,
+nowFrontingId:member.id,
+
+nowFrontingTime:
+new Date().toISOString(),
+
+nextFronting:"",
+nextFrontingTime:""
+
+};
+
+localStorage.setItem(
+"currentFrontingData",
+JSON.stringify(data)
+);
+
+saveHistory(data);
+
+alert("Saved.");
+
+}
+
+function clearCurrent(){
+
+localStorage.removeItem(
+"currentFrontingData"
+);
+
+alert("Cleared.");
+
+}
+
+function getHistory(){
+
+return JSON.parse(
+localStorage.getItem(
+"frontHistory"
+) || "[]"
+);
+
+}
+
+function saveHistory(entry){
+
+let history =
+getHistory();
+
+history.unshift(entry);
+
+history =
+history.slice(0,30);
+
+localStorage.setItem(
+"frontHistory",
+JSON.stringify(history)
+);
+
+renderHistory();
+
+}
+
+function restoreHistory(index){
+
+const history =
+getHistory();
+
+const entry =
+history[index];
+
+localStorage.setItem(
+"currentFrontingData",
+JSON.stringify(entry)
+);
+
+alert("Restored.");
+
+}
+
+function deleteHistory(index){
+
+let history =
+getHistory();
+
+history.splice(index,1);
+
+localStorage.setItem(
+"frontHistory",
+JSON.stringify(history)
+);
+
+renderHistory();
+
+}
+
+function renderHistory(){
+
+const list =
+document.getElementById(
+"historyList"
+);
+
+const history =
+getHistory();
+
+if(history.length===0){
+
+list.innerHTML =
+"<p>No history.</p>";
+
+return;
+
+}
+
+list.innerHTML =
+history.map((item,index)=>`
+
+<div class="history-item">
+
+<div>
+
+<b>${item.nowFronting}</b>
+
+<br>
+
+<small>
+
+${new Date(
+item.nowFrontingTime
+).toLocaleString()}
+
+</small>
+
+</div>
+
+<div class="history-actions">
+
+<button
+class="small-btn restore"
+onclick="restoreHistory(${index})">
+Restore
+</button>
+
+<button
+class="small-btn delete"
+onclick="deleteHistory(${index})">
+Delete
+</button>
+
+</div>
+
+</div>
+
+`).join("");
+
+}
+
+renderHistory();
+
+</script>
+
 </body>
 </html>
